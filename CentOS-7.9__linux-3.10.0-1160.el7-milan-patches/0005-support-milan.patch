@@ -1,0 +1,27 @@
+From: root <root@localhost.localdomain>
+Date: Mon, 4 May 2020 17:07:13 -0700
+Subject: [PATCH] with MILAN Support .
+
+	Header File Changes for adding Milan Support, Add Family 19h PCI IDs
+
+---
+ include/linux/pci_ids.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 3897fbee..74c74326 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -543,6 +543,9 @@
+ #define PCI_DEVICE_ID_AMD_17H_DF_F3	0x1463
+ #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F3 0x15eb
+ #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
++#define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
++#define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4 0x1444
++#define PCI_DEVICE_ID_AMD_19H_DF_F3    0x1653
+ #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
+ #define PCI_DEVICE_ID_AMD_LANCE		0x2000
+ #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
+-- 
+2.17.0
+

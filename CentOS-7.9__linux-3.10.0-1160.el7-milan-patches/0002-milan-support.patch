@@ -1,0 +1,70 @@
+From de779048b4031b5f747abc55120998636e9c5abd Mon Sep 17 00:00:00 2001
+From: root <root@localhost.localdomain>
+Date: Thu, 19 Nov 2020 03:23:23 -0500
+Subject: [PATCH] linux-3.10.0-1160.el7 Milan Support Patches. .
+
+---
+ arch/x86/include/asm/kvm_host.h  | 2 ++
+ arch/x86/include/asm/mce.h       | 3 +++
+ arch/x86/include/asm/processor.h | 4 +++-
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index daea8f2..2e80873 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -191,6 +191,7 @@ enum {
+  * with the SVE bit in EPT PTEs.
+  */
+ #define SPTE_SPECIAL_MASK (1ULL << 62)
++#define SPTE_MMIO_MASK (3ULL << 52)
+ 
+ /* apic attention bits */
+ #define KVM_APIC_CHECK_VAPIC	0
+@@ -1035,6 +1036,7 @@ struct kvm_x86_ops {
+ 	void (*handle_external_intr)(struct kvm_vcpu *vcpu);
+ 	bool (*mpx_supported)(void);
+ 
++	bool (*pku_supported)(void);
+ 	int (*check_nested_events)(struct kvm_vcpu *vcpu, bool external_intr);
+ 
+ 	void (*sched_in)(struct kvm_vcpu *kvm, int cpu);
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index daba381..7ba961f 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -47,6 +47,8 @@
+ #define MCI_STATUS_SYNDV	BIT_ULL(53)  /* synd reg. valid */
+ #define MCI_STATUS_DEFERRED	BIT_ULL(44)  /* uncorrected error, deferred exception */
+ #define MCI_STATUS_POISON	BIT_ULL(43)  /* access poisonous data */
++#define MCI_STATUS_SCRUB        BIT_ULL(40)  /* Error detected during scrub operation */
++
+ 
+ /*
+  * McaX field if set indicates a given bank supports MCA extensions:
+@@ -357,6 +359,7 @@ extern void apei_mce_report_mem_error(int corrected,
+ /* These may be used by multiple smca_hwid_mcatypes */
+ enum smca_bank_types {
+ 	SMCA_LS = 0,	/* Load Store */
++	SMCA_LS_V2,     /* Load Store */
+ 	SMCA_IF,	/* Instruction Fetch */
+ 	SMCA_L2_CACHE,	/* L2 Cache */
+ 	SMCA_DE,	/* Decoder Unit */
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 40bb5e8..6e73bd6 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -164,7 +164,9 @@ enum cpuid_regs_idx {
+ #define X86_VENDOR_CENTAUR	5
+ #define X86_VENDOR_TRANSMETA	7
+ #define X86_VENDOR_NSC		8
+-#define X86_VENDOR_NUM		9
++#define X86_VENDOR_HYGON        9
++#define X86_VENDOR_ZHAOXIN      10
++#define X86_VENDOR_NUM          11
+ 
+ #define X86_VENDOR_UNKNOWN	0xff
+ 
+-- 
+1.8.3.1
+
